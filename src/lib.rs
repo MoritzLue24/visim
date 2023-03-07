@@ -94,7 +94,7 @@ pub fn test() -> Result<(), err::Error> {
         gl.ClearColor(0.3, 0.3, 0.5, 1.);
     }
 
-    let mut event_pump = err::map_str(sdl.event_pump(), err::Kind::Other)?;
+    let mut event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
     'main: loop {
         while let Some(event) = event_pump.poll_event() {
             match event {
