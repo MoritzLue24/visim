@@ -36,9 +36,9 @@ pub fn test() -> Result<(), err::Error> {
 
     let vertices: Vec<f32> = vec![
         // Positions     // Colors
-         0.5, -0.5, 0.,  1., 1., 1.,  // Bottom right
-        -0.5, -0.5, 0.,  1., 1., 1.,  // Bottom left
-         0.0,  0.5, 0.,  1., 1., 1.,  // Top
+         0.5, -0.5, 0.,  0.5, 1.,   1.,  // Bottom right
+        -0.5, -0.5, 0.,  1.,  0.5, 1.,  // Bottom left
+         0.0,  0.5, 0.,  1.,  1.,   0.5,  // Top
     ];
 
     let mut vbo = 0;
@@ -102,7 +102,7 @@ pub fn test() -> Result<(), err::Error> {
                 _ => ()
             }
         }
-        println!("Gl size: {}", std::mem::size_of_val(&gl));
+
         unsafe {
             gl.Clear(gl::COLOR_BUFFER_BIT);
             gl.BindVertexArray(vao);
