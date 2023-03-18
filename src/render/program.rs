@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use gl::Gl;
-use crate::{shader::Shader, err};
+use crate::{Shader, err};
 
 
 pub struct Program {

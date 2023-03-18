@@ -1,11 +1,13 @@
 #[allow(dead_code)]
 pub mod err;
-mod shader;
-mod program;
+mod render;
+// mod shader;
+// mod program;
 
 use std::ffi::CString;
-use program::Program;
-use shader::Shader;
+// use program::Program;
+// use shader::Shader;
+use render::{Vertex, Shader, Program};
 
 
 pub fn test() -> Result<(), err::Error> {
@@ -34,11 +36,11 @@ pub fn test() -> Result<(), err::Error> {
     let shader_program = Program::from_shaders(&gl, &[vert_shader, frag_shader])?;
     shader_program.set_used();
 
-    let vertices: Vec<f32> = vec![
+    let vertices: Vec<Vertex> = vec![
         // Positions     // Colors
-         0.5, -0.5, 0.,  0.5, 1.,   1.,  // Bottom right
-        -0.5, -0.5, 0.,  1.,  0.5, 1.,  // Bottom left
-         0.0,  0.5, 0.,  1.,  1.,   0.5,  // Top
+        Vertex { pos: (0.5, -0.5, 0.), color: (0.5, 1., 1., 1.) },  // Bottom right
+        Vertex { pos: (-0.5, -0.5, 0.), color: (1., 0.5, 1., 1.) }, // Bottom left
+        Vertex { pos: (0.0, 0.5, 0.), color: (1., 1., 0.5, 1.) }    // Top
     ];
 
     let mut vbo = 0;
@@ -47,7 +49,7 @@ pub fn test() -> Result<(), err::Error> {
         gl.BindBuffer(gl::ARRAY_BUFFER, vbo);
         gl.BufferData(
             gl::ARRAY_BUFFER,
-            (vertices.len() * std::mem::size_of::<f32>()) as gl::types::GLsizeiptr,
+            (vertices.len() * std::mem::size_of::<Vertex>()) as gl::types::GLsizeiptr,
             vertices.as_ptr() as *const gl::types::GLvoid,
             gl::STATIC_DRAW
         );
@@ -67,7 +69,7 @@ pub fn test() -> Result<(), err::Error> {
             3,               // Number of components per attribute
             gl::FLOAT,       // Data type
             gl::FALSE,       // Normalized (int to float conversion)
-            (6 * std::mem::size_of::<f32>()) as gl::types::GLint,  // Byte offset between consecutive attributes
+            (7 * std::mem::size_of::<f32>()) as gl::types::GLint,  // Byte offset between consecutive attributes
             std::ptr::null() // Offset of first component
         );
 
@@ -75,10 +77,10 @@ pub fn test() -> Result<(), err::Error> {
         gl.EnableVertexAttribArray(1);
         gl.VertexAttribPointer(
             1,               // Index of attribute
-            3,               // Number of components per attribute
+            4,               // Number of components per attribute
             gl::FLOAT,       // Data type
             gl::FALSE,       // Normalized (int to float conversion)
-            (6 * std::mem::size_of::<f32>()) as gl::types::GLint,           // Byte offset between consecutive attributes
+            (7 * std::mem::size_of::<f32>()) as gl::types::GLint,           // Byte offset between consecutive attributes
             (3 * std::mem::size_of::<f32>()) as *const gl::types::GLvoid    // Offset of first component
         );
         
