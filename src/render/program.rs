@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use gl::Gl;
-use crate::{Shader, err};
+use crate::{render::Shader, err};
 
 
 pub struct Program {
@@ -49,7 +49,7 @@ impl Program {
         self.id
     }
 
-    pub fn set_used(&self) {
+    pub fn bind(&self) {
         unsafe { self.gl.UseProgram(self.id) }
     }
 }
