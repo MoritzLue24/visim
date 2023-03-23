@@ -1,6 +1,10 @@
 pub mod err;
 mod render;
 pub mod shapes;
+mod window;
+
+pub use window::Window;
+pub type Event = sdl2::event::Event;
 
 
 pub fn test() -> Result<(), err::Error> {
@@ -30,7 +34,7 @@ pub fn test() -> Result<(), err::Error> {
     'main: loop {
         while let Some(event) = event_pump.poll_event() {
             match event {
-                sdl2::event::Event::Quit { .. } => break 'main,
+                Event::Quit { .. } => break 'main,
                 _ => ()
             }
         }
