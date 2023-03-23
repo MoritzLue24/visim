@@ -6,7 +6,8 @@ fn main() -> Result<(), visim::err::Error> {
     while window.is_open() {
         for event in window.get_events() {
             match event {
-                visim::Event::KeyDown { timestamp: _, window_id: _, keycode, .. } => println!("{:?}", keycode),
+                visim::Event::Quit { .. } => println!("quit"),
+                visim::Event::KeyDown { .. } => println!("{:?}", event),
                 _ => ()
             }
         }

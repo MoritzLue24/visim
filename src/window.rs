@@ -41,11 +41,17 @@ impl Window {
     pub fn get_events(&mut self) -> Vec<Event> {
         let mut events = Vec::new();
         for event in self.sdl_event_pump.poll_iter() {
-            match event {
-                Event::Quit { timestamp: _ } => self.open = false,
-                _ => {
-                    events.push(event);
-                }
+            match Event::from(event) {
+                Ok(e) => { 
+                    match e {
+                        Event::Quit => self.open = false,
+                        _ => ()
+                    };
+                    events.push(e)
+                },
+                Err(e) => match e {
+                    _ => ()
+                },
             }
         }
         events
