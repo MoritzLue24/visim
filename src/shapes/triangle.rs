@@ -1,6 +1,6 @@
 use std::ffi::CString;
 
-use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err};
+use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance};
 
 
 pub struct Triangle {
@@ -41,8 +41,10 @@ impl Triangle {
 
         Ok(Self { program, _vbo: vbo, vao })
     }
+}
 
-    pub fn render(&self, gl: &gl::Gl) {
+impl RenderInstance for Triangle {
+    fn render_instance(&self, gl: &gl::Gl) {
         self.program.bind();
         self.vao.bind();
 

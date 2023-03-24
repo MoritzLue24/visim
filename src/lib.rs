@@ -1,9 +1,11 @@
 pub mod err;
 mod render;
+mod render_instance;
 pub mod shapes;
 pub mod event;
 mod window;
 
+pub use render_instance::RenderInstance;
 pub use event::Event;
 pub use window::Window;
 
@@ -42,7 +44,6 @@ pub fn test() -> Result<(), err::Error> {
 
         unsafe {
             gl.Clear(gl::COLOR_BUFFER_BIT);
-            triangle.render(&gl);
         }
 
         window.gl_swap_window();

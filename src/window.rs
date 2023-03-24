@@ -1,10 +1,10 @@
-use crate::{err, Event};
+use crate::{err, Event, RenderInstance};
 
 
 pub struct Window {
     sdl_win: sdl2::video::Window,
     sdl_event_pump: sdl2::EventPump,
-    gl: gl::Gl,
+    pub gl: gl::Gl,
     open: bool
 }
 
@@ -57,8 +57,8 @@ impl Window {
         events
     }
 
-    pub fn display(&self) {
-
+    pub fn render(&self, render_instance: &impl RenderInstance) {
+        render_instance.render_instance(&self.gl);
     }
 
     pub fn is_open(&self) -> bool {
