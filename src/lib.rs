@@ -31,7 +31,7 @@ pub fn test() -> Result<(), err::Error> {
         gl.ClearColor(0.3, 0.3, 0.5, 1.);
     }
 
-    let triangle = shapes::Triangle::new(&gl)?;
+    // let triangle = shapes::Triangle::new(&gl)?;
 
     let mut event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
     'main: loop {

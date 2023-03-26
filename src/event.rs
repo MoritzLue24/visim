@@ -22,13 +22,13 @@ impl Event {
     pub fn from(value: sdl2::event::Event) -> Result<Self, sdl2::event::Event> {
         match value {
             sdl2::event::Event::Quit { .. } => Ok(Self::Quit),
-            sdl2::event::Event::KeyDown { timestamp: _, window_id: _, keycode, scancode: _, keymod, .. } => Ok(Self::KeyDown { key: keycode.unwrap(), modifier: keymod }),
-            sdl2::event::Event::KeyUp { timestamp: _, window_id: _, keycode, scancode: _, keymod, .. } => Ok(Self::KeyUp { key: keycode.unwrap(), modifier: keymod }),
-            sdl2::event::Event::MouseMotion { timestamp: _, window_id: _, which: _, mousestate: _, x, y, xrel, yrel } => Ok(Self::MouseMotion { x, y, x_rel: xrel, y_rel: yrel }),
-            sdl2::event::Event::MouseButtonDown { timestamp: _, window_id: _, which: _, mouse_btn, clicks: _, x, y } => Ok(Self::MouseButtonDown { button: mouse_btn, x, y }),
-            sdl2::event::Event::MouseButtonUp { timestamp: _, window_id: _, which: _, mouse_btn, clicks: _, x, y } => Ok(Self::MouseButtonUp { button: mouse_btn, x, y }),
-            sdl2::event::Event::MouseWheel { timestamp: _, window_id: _, which: _, x, y, direction } => Ok(Self::MouseWheel { direction, x, y }),
-            sdl2::event::Event::DropFile { timestamp: _, window_id: _, filename } => Ok(Self::DropFile { filename }),
+            sdl2::event::Event::KeyDown { keycode, keymod, .. } => Ok(Self::KeyDown { key: keycode.unwrap(), modifier: keymod }),
+            sdl2::event::Event::KeyUp { keycode, keymod, .. } => Ok(Self::KeyUp { key: keycode.unwrap(), modifier: keymod }),
+            sdl2::event::Event::MouseMotion { x, y, xrel, yrel, .. } => Ok(Self::MouseMotion { x, y, x_rel: xrel, y_rel: yrel }),
+            sdl2::event::Event::MouseButtonDown { mouse_btn, x, y, .. } => Ok(Self::MouseButtonDown { button: mouse_btn, x, y }),
+            sdl2::event::Event::MouseButtonUp { mouse_btn, x, y, .. } => Ok(Self::MouseButtonUp { button: mouse_btn, x, y }),
+            sdl2::event::Event::MouseWheel { x, y, direction, .. } => Ok(Self::MouseWheel { direction, x, y }),
+            sdl2::event::Event::DropFile { filename, .. } => Ok(Self::DropFile { filename }),
             _ => Err(value)
         }
     }

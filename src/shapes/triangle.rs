@@ -1,5 +1,4 @@
 use std::ffi::CString;
-
 use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance};
 
 

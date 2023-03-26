@@ -35,7 +35,7 @@ impl Shader {
                     error.as_ptr() as *mut gl::types::GLchar
             ) }
         
-            return Err(err::gl_shader_error(&error.to_string_lossy()))
+            return Err(err::parse_shader_error(&error.to_string_lossy()))
         }
 
         Ok(Shader { gl: gl.clone(), id })

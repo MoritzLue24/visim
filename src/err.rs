@@ -8,18 +8,18 @@ pub fn new<T: std::fmt::Debug>(msg: T) -> Error {
 }
 
 #[track_caller]
-pub fn gl_shader_error(msg: &str) -> Error {
+pub fn parse_shader_error(msg: &str) -> Error {
     let location = std::panic::Location::caller();
-    Error { kind: Kind::GLShaderError, msg: format!(
+    Error { kind: Kind::ParseShaderError, msg: format!(
         "\"{}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
     )}
 }
 
 
 #[track_caller]
-pub fn gl_program_error(msg: &str) -> Error {
+pub fn link_program_error(msg: &str) -> Error {
     let location = std::panic::Location::caller();
-    Error { kind: Kind::GLProgramError, msg: format!(
+    Error { kind: Kind::LinkProgramError, msg: format!(
         "\"{}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
     )}
 }
@@ -28,8 +28,8 @@ pub fn gl_program_error(msg: &str) -> Error {
 #[derive(Debug, PartialEq)]
 pub enum Kind {
     Other,
-    GLShaderError,
-    GLProgramError
+    ParseShaderError,
+    LinkProgramError
 }
 
 

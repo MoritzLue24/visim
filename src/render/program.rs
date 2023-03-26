@@ -33,7 +33,7 @@ impl Program {
                     error.as_ptr() as *mut gl::types::GLchar
             ) }
 
-            return Err(err::gl_program_error(&error.to_string_lossy()))
+            return Err(err::link_program_error(&error.to_string_lossy()))
         }
 
         for shader in shaders {
@@ -41,12 +41,6 @@ impl Program {
         }
 
         Ok(Program { gl: gl.clone(), id })
-    }
-    
-    // TODO: Remove
-    #[allow(dead_code)]
-    pub fn id(&self) -> gl::types::GLuint {
-        self.id
     }
 
     pub fn bind(&self) {

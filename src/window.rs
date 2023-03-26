@@ -37,6 +37,12 @@ impl Window {
             open: true
         })
     }
+    
+    // TODO: Custom color type
+    pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
+        unsafe { self.gl.ClearColor(r, g, b, a) }
+        unsafe { self.gl.Clear(gl::COLOR_BUFFER_BIT) }
+    }
 
     pub fn get_events(&mut self) -> Vec<Event> {
         let mut events = Vec::new();
@@ -59,6 +65,10 @@ impl Window {
 
     pub fn render(&self, render_instance: &impl RenderInstance) {
         render_instance.render_instance(&self.gl);
+    }
+
+    pub fn update(&self) {
+        self.sdl_win.gl_swap_window();
     }
 
     pub fn is_open(&self) -> bool {
