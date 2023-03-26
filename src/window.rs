@@ -1,4 +1,4 @@
-use crate::{err, Event, RenderInstance};
+use crate::{err, Event, RenderInstance, Result};
 
 
 pub struct Window {
@@ -9,7 +9,7 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn new(title: &str, width: u32, height: u32) -> Result<Self, err::Error> {
+    pub fn new(title: &str, width: u32, height: u32) -> Result<Self> {
         let sdl = sdl2::init().map_err(|e| err::new(&e))?;
         let video_subsystem = sdl.video().map_err(|e| err::new(&e))?;
         let gl_attr = video_subsystem.gl_attr();

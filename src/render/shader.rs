@@ -1,7 +1,7 @@
 use std::ffi::{CString, CStr};
 use gl::Gl;
 
-use crate::err;
+use crate::{err, Result};
 
 
 pub struct Shader {
@@ -10,7 +10,7 @@ pub struct Shader {
 }
 
 impl Shader {
-    pub fn from_source(gl: &Gl, source: &CStr, kind: gl::types::GLuint) -> Result<Self, err::Error> {
+    pub fn from_source(gl: &Gl, source: &CStr, kind: gl::types::GLuint) -> Result<Self> {
         let id = unsafe { gl.CreateShader(kind) };
         
         unsafe {

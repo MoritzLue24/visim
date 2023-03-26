@@ -9,8 +9,10 @@ pub use render_instance::RenderInstance;
 pub use event::Event;
 pub use window::Window;
 
+pub type Result<T> = std::result::Result<T, err::Error>;
 
-pub fn test() -> Result<(), err::Error> {
+
+pub fn test() -> Result<()> {
     let sdl = sdl2::init().map_err(|e| err::new(&e))?;
     let video_subsystem = sdl.video().map_err(|e| err::new(&e))?;
     let gl_attr = video_subsystem.gl_attr();

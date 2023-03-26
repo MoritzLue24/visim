@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use gl::Gl;
-use crate::{render::Shader, err};
+use crate::{render::Shader, err, Result};
 
 
 pub struct Program {
@@ -9,7 +9,7 @@ pub struct Program {
 }
 
 impl Program {
-    pub fn from_shaders(gl: &Gl, shaders: &[Shader]) -> Result<Self, err::Error> {
+    pub fn from_shaders(gl: &Gl, shaders: &[Shader]) -> Result<Self> {
         let id = unsafe { gl.CreateProgram() };
         for shader in shaders {
             unsafe { gl.AttachShader(id, shader.id()) }

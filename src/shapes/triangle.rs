@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance};
+use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance, Result};
 
 
 pub struct Triangle {
@@ -9,7 +9,7 @@ pub struct Triangle {
 }
 
 impl Triangle {
-    pub fn new(gl: &gl::Gl) -> Result<Self, err::Error> {
+    pub fn new(gl: &gl::Gl) -> Result<Self> {
         let vert_shader = Shader::from_source(&gl,
             &CString::new(include_str!("../shaders/triangle.vert")).map_err(|e| err::new(e))?,
             gl::VERTEX_SHADER
