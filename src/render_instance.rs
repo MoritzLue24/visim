@@ -1,4 +1,4 @@
 
 pub trait RenderInstance {
-    fn render_instance(&self, gl: &gl::Gl);
+    fn render_instance(&self);
 }

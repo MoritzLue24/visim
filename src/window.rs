@@ -1,4 +1,4 @@
-use crate::{err, Event, RenderInstance, Result};
+use crate::{err, Event, RenderInstance, Result, render::{Program, Shader}, ShaderType};
 
 
 pub struct Window {
@@ -6,6 +6,7 @@ pub struct Window {
     sdl_event_pump: sdl2::EventPump,
     _sdl_gl_ctx: sdl2::video::GLContext,
     gl: gl::Gl,
+    program: Program,
     open: bool
 }
 
@@ -22,8 +23,10 @@ impl Window {
         let event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
 
         let gl_ctx = window.gl_create_context().map_err(|e| err::new(&e))?;
-        let gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
+        let gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as _);
         
+        let program = Program::default(&gl)?;
+
         unsafe {
             gl.Viewport(0, 0,
                 i32::try_from(width).or(Err(err::new("Window width too large")))?,
@@ -36,12 +39,17 @@ impl Window {
             sdl_event_pump: event_pump,
             gl,
             _sdl_gl_ctx: gl_ctx,
-            open: true
+            open: true,
+            program
         })
     }
     
-    pub fn get_gl(&self) -> &gl::Gl {
-        &self.gl
+    pub fn get_gl(&self) -> gl::Gl {
+        self.gl.clone()
+    }
+
+    pub fn get_program(&self) -> Program {
+        self.program.clone()
     }
 
     pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
@@ -66,10 +74,6 @@ impl Window {
             }
         }
         events
-    }
-
-    pub fn render(&self, render_instance: &impl RenderInstance) {
-        render_instance.render_instance(&self.gl);
     }
 
     pub fn update(&self) {

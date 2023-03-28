@@ -1,7 +1,16 @@
-use std::ffi::{CString, CStr};
+use std::ffi::CString;
 use gl::Gl;
-
 use crate::{err, Result};
+
+
+pub enum ShaderType {
+    VertexShader = 35633,
+    TessControlShader = 36488,
+    TessEvaluationShader = 36487,
+    GeometryShader = 36313,
+    FragmentShader = 35632,
+    ComputeShader = 37305
+}
 
 
 pub struct Shader {
@@ -10,11 +19,11 @@ pub struct Shader {
 }
 
 impl Shader {
-    pub fn from_source(gl: &Gl, source: &CStr, kind: gl::types::GLuint) -> Result<Self> {
-        let id = unsafe { gl.CreateShader(kind) };
+    pub fn from_source(gl: &Gl, source: &str, kind: ShaderType) -> Result<Self> {
+        let id = unsafe { gl.CreateShader(kind as u32) };
         
         unsafe {
-            gl.ShaderSource(id, 1, &source.as_ptr(), std::ptr::null());
+            gl.ShaderSource(id, 1, &CString::new(source).map_err(|e| err::new(e))?.as_ptr(), std::ptr::null());
             gl.CompileShader(id);
         }
 

@@ -4,6 +4,11 @@ fn main() -> visim::Result<()> {
     let mut window = visim::Window::new("Hello world", 1280, 720)?;
     let t = visim::shapes::Triangle::new(&window)?;
 
+    // t.set_program(visim::Program::from_shaders(&window.get_gl(), &[
+    //     visim::Shader::from_source(&window.get_gl(), include_str!("../../src/shaders/default.vert"), visim::ShaderType::VertexShader)?,
+    //     visim::Shader::from_source(&window.get_gl(), include_str!("test.frag"), visim::ShaderType::FragmentShader)?
+    // ])?);
+
     while window.is_open() {
         for event in window.get_events() {
             match event {
@@ -14,7 +19,7 @@ fn main() -> visim::Result<()> {
         }
     
         window.clear(0.5, 0.2, 0.7, 1.0);
-        window.render(&t);
+        t.render();
         window.update();
     }
 

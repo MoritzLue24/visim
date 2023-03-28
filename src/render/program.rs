@@ -1,15 +1,22 @@
 use std::ffi::CString;
-use gl::Gl;
-use crate::{render::Shader, err, Result};
+use crate::{render::Shader, err, Result, ShaderType};
 
 
+#[derive(Clone)]
 pub struct Program {
-    gl: Gl,
+    gl: gl::Gl,
     id: gl::types::GLuint
 }
 
 impl Program {
-    pub fn from_shaders(gl: &Gl, shaders: &[Shader]) -> Result<Self> {
+    pub fn default(gl: &gl::Gl) -> Result<Self> {
+        Self::from_shaders(gl, &[
+            Shader::from_source(gl, include_str!("../shaders/default.vert"), ShaderType::VertexShader)?,
+            Shader::from_source(gl, include_str!("../shaders/default.frag"), ShaderType::FragmentShader)?
+        ])
+    }
+
+    pub fn from_shaders(gl: &gl::Gl, shaders: &[Shader]) -> Result<Self> {
         let id = unsafe { gl.CreateProgram() };
         for shader in shaders {
             unsafe { gl.AttachShader(id, shader.id()) }

@@ -1,4 +1,7 @@
 
+pub type Result<T> = std::result::Result<T, Error>;
+
+
 #[track_caller]
 pub fn new<T: std::fmt::Debug>(msg: T) -> Error {
     let location = std::panic::Location::caller();
@@ -14,7 +17,6 @@ pub fn parse_shader_error(msg: &str) -> Error {
         "\"{}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
     )}
 }
-
 
 #[track_caller]
 pub fn link_program_error(msg: &str) -> Error {

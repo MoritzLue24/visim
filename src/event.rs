@@ -17,7 +17,6 @@ pub enum Event {
     DropFile { filename: String },
 }
 
-
 impl Event {
     pub fn from(value: sdl2::event::Event) -> Result<Self, sdl2::event::Event> {
         match value {
