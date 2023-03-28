@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance, Result};
+use crate::{render::{Program, ArrayBuffer, VertexArray, Shader, Vertex}, err, RenderInstance, Result, Window};
 
 
 pub struct Triangle {
@@ -9,18 +9,19 @@ pub struct Triangle {
 }
 
 impl Triangle {
-    pub fn new(gl: &gl::Gl) -> Result<Self> {
-        let vert_shader = Shader::from_source(&gl,
+    pub fn new(window: &Window) -> Result<Self> {
+        let gl = window.get_gl();
+        let vert_shader = Shader::from_source(gl,
             &CString::new(include_str!("../shaders/triangle.vert")).map_err(|e| err::new(e))?,
             gl::VERTEX_SHADER
         )?;
 
-        let frag_shader = Shader::from_source(&gl,
+        let frag_shader = Shader::from_source(gl,
             &CString::new(include_str!("../shaders/triangle.frag")).map_err(|e| err::new(e))?,
             gl::FRAGMENT_SHADER
         )?;
 
-        let program = Program::from_shaders(&gl, &[vert_shader, frag_shader])?;
+        let program = Program::from_shaders(gl, &[vert_shader, frag_shader])?;
         let vertices: Vec<Vertex> = vec![
             Vertex { pos: (0.5, -0.5, 0.), color: (0.5, 1., 1., 1.) },  // Bottom right
             Vertex { pos: (-0.5, -0.5, 0.), color: (1., 0.5, 1., 1.) }, // Bottom left

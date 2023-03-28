@@ -2,7 +2,7 @@
 
 fn main() -> visim::Result<()> {
     let mut window = visim::Window::new("Hello world", 1280, 720)?;
-    let t = visim::shapes::Triangle::new(&window.gl)?;
+    let t = visim::shapes::Triangle::new(&window)?;
 
     while window.is_open() {
         for event in window.get_events() {

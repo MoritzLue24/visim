@@ -5,7 +5,7 @@ pub struct Window {
     sdl_win: sdl2::video::Window,
     sdl_event_pump: sdl2::EventPump,
     _sdl_gl_ctx: sdl2::video::GLContext,
-    pub gl: gl::Gl,
+    gl: gl::Gl,
     open: bool
 }
 
@@ -40,7 +40,10 @@ impl Window {
         })
     }
     
-    // TODO: Custom color type
+    pub fn get_gl(&self) -> &gl::Gl {
+        &self.gl
+    }
+
     pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
         unsafe { self.gl.ClearColor(r, g, b, a) }
         unsafe { self.gl.Clear(gl::COLOR_BUFFER_BIT) }

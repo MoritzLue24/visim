@@ -11,3 +11,4 @@ gl_debug = ["gl/debug"]
 [dependencies]
 sdl2 = "0.35.2"
 gl = { path = "gl" }
+lazy_static = "1.4.0"
