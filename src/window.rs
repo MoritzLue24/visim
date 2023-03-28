@@ -4,6 +4,7 @@ use crate::{err, Event, RenderInstance, Result};
 pub struct Window {
     sdl_win: sdl2::video::Window,
     sdl_event_pump: sdl2::EventPump,
+    _sdl_gl_ctx: sdl2::video::GLContext,
     pub gl: gl::Gl,
     open: bool
 }
@@ -20,7 +21,7 @@ impl Window {
             .map_err(|e| err::new(&e.to_string()))?;
         let event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
 
-        let _gl_ctx = window.gl_create_context().map_err(|e| err::new(&e))?;
+        let gl_ctx = window.gl_create_context().map_err(|e| err::new(&e))?;
         let gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
         
         unsafe {
@@ -34,6 +35,7 @@ impl Window {
             sdl_win: window,
             sdl_event_pump: event_pump,
             gl,
+            _sdl_gl_ctx: gl_ctx,
             open: true
         })
     }
