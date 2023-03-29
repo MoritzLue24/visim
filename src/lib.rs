@@ -15,7 +15,7 @@ pub use render::{Program, ShaderType, Shader};
 #[cfg(test)]
 mod tests {
     use super::*;
-
+    
     #[test]
     fn win_loop() -> Result<()> {
         let mut window = Window::new("Hello world", 800, 600)?;

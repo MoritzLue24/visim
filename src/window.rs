@@ -1,4 +1,4 @@
-use crate::{err, Event, RenderInstance, Result, render::{Program, Shader}, ShaderType};
+use crate::{err, Event, Result, render::Program};
 
 
 pub struct Window {
