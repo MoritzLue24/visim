@@ -1,15 +1,15 @@
-use crate::Vector2;
+use crate::{Vector2, Color};
 
 
 #[derive(Clone, Copy, Debug)]
 #[repr(C, packed)]
 pub struct Vertex where {
     pub pos: Vector2,
-    pub color: (f32, f32, f32, f32)
+    pub color: Color
 }
 
 impl Vertex {
-    pub fn new(pos: Vector2, color: (f32, f32, f32, f32)) -> Self {
+    pub fn new(pos: Vector2, color: Color) -> Self {
         Self { pos, color }
     }
 
