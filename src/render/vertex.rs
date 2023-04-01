@@ -7,6 +7,10 @@ pub struct Vertex where {
 }
 
 impl Vertex {
+    pub fn new(pos: (f32, f32, f32), color: (f32, f32, f32, f32)) -> Self {
+        Self { pos, color }
+    }
+
     pub fn attrib_pointers(gl: &gl::Gl) {
         unsafe {
             // Position
