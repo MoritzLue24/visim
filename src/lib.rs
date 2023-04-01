@@ -1,6 +1,7 @@
 pub mod err;
 pub mod shapes;
 pub mod event;
+mod vector;
 mod render;
 mod render_instance;
 mod window;
@@ -9,6 +10,7 @@ pub use err::Result;
 pub use event::Event;
 pub use window::Window;
 pub use render_instance::RenderInstance;
+pub use vector::Vector2;
 pub use render::{Program, ShaderType, Shader, Vertex};
 
 
