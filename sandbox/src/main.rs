@@ -4,9 +4,9 @@ fn main() -> visim::Result<()> {
     let mut window = visim::Window::new("Hello world", 1280, 720)?;
 
     let mut t = visim::shapes::Polygon::new(&window, &[
-        visim::Vertex::new(visim::Vector2::new(-0.5, -0.5), visim::Color::rgb(1.0, 0.0, 0.0)),
-        visim::Vertex::new(visim::Vector2::new(0.5, -0.5), visim::Color::rgb(0.0, 1.0, 0.0)),
-        visim::Vertex::new(visim::Vector2::new(0.0, 0.5), visim::Color::rgb(0.0, 0.0, 1.0)),
+        visim::Vertex::new((-0.5, -0.5), (1.0, 0.0, 0.0)),
+        visim::Vertex::new((0.5, -0.5), (0.0, 1.0, 0.0)),
+        visim::Vertex::new((0.0, 0.5), (0.0, 0.0, 1.0)),
     ])?;
     t.fill = true;   
 

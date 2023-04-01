@@ -9,8 +9,8 @@ pub struct Vertex where {
 }
 
 impl Vertex {
-    pub fn new(pos: Vector2, color: Color) -> Self {
-        Self { pos, color }
+    pub fn new<P: Into<Vector2>, C: Into<Color>>(pos: P, color: C) -> Self {
+        Self { pos: pos.into(), color: color.into() }
     }
 
     pub fn attrib_pointers(gl: &gl::Gl) {

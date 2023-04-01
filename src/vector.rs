@@ -11,3 +11,9 @@ impl Vector2 {
         Self { x, y }
     }
 }
+
+impl From<(f32, f32)> for Vector2 {
+    fn from(value: (f32, f32)) -> Self {
+        Self { x: value.0, y: value.1 }
+    }
+}
