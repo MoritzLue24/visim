@@ -17,3 +17,15 @@ impl Color {
         Self { r, g, b, a: 1.0 }
     }
 }
+
+impl From<(f32, f32, f32)> for Color {
+    fn from(value: (f32, f32, f32)) -> Self {
+        Self { r: value.0, g: value.1, b: value.2, a: 1.0 }
+    }
+}
+
+impl From<(f32, f32, f32, f32)> for Color  {
+    fn from(value: (f32, f32, f32, f32)) -> Self {
+        Self { r: value.0, g: value.1, b: value.2, a: value.3 }
+    }
+}
