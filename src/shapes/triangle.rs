@@ -5,7 +5,8 @@ pub struct Triangle {
     _vbo: ArrayBuffer,
     vao: VertexArray,
     gl: gl::Gl,
-    program: Program
+    program: Program,
+    pub fill: bool
 }
 
 impl Triangle {
@@ -29,7 +30,13 @@ impl Triangle {
         vbo.unbind();
         vao.unbind();
 
-        Ok(Self { _vbo: vbo, vao, gl, program: window.get_program() })
+        Ok(Self {
+            _vbo: vbo,
+            vao,
+            gl,
+            program: window.get_program(),
+            fill: true
+        })
     }
 
     pub fn set_program(&mut self, program: Program) {
@@ -45,6 +52,12 @@ impl RenderInstance for Triangle {
     fn render_instance(&self) {
         self.program.bind();
         self.vao.bind();
-        unsafe { self.gl.DrawArrays(gl::TRIANGLES, 0, 3) }
+        
+        if self.fill {
+            unsafe { self.gl.DrawArrays(gl::TRIANGLE_FAN, 0, 3) }
+        } 
+        else {
+            unsafe { self.gl.DrawArrays(gl::LINE_LOOP, 0, 3) }
+        }
     }
 }
