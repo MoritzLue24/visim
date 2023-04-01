@@ -39,3 +39,11 @@ impl Vertex {
         }
     }
 }
+
+impl<P: Into<Vector2>, C: Into<Color>> From<(P, C)> for Vertex {
+    fn from(value: (P, C)) -> Self {
+        Self { pos: value.0.into(), color: value.1.into() }
+    }
+}
+
+
