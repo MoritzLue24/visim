@@ -9,7 +9,7 @@ pub use err::Result;
 pub use event::Event;
 pub use window::Window;
 pub use render_instance::RenderInstance;
-pub use render::{Program, ShaderType, Shader};
+pub use render::{Program, ShaderType, Shader, Vertex};
 
 
 #[cfg(test)]
