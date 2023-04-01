@@ -2,7 +2,7 @@
 
 fn main() -> visim::Result<()> {
     let mut window = visim::Window::new("Hello world", 1280, 720)?;
-    let mut t = visim::shapes::Triangle::new(&window)?;
+    let mut t = visim::shapes::Polygon::new(&window)?;
     t.fill = true;   
 
     while window.is_open() {

@@ -1,3 +1,3 @@
-mod triangle;
+mod polygon;
 
-pub use triangle::Triangle;
+pub use polygon::Polygon;

@@ -1,7 +1,7 @@
 use crate::{render::{Program, ArrayBuffer, VertexArray, Vertex}, RenderInstance, Result, Window};
 
 
-pub struct Triangle {
+pub struct Polygon {
     _vbo: ArrayBuffer,
     vao: VertexArray,
     gl: gl::Gl,
@@ -9,7 +9,7 @@ pub struct Triangle {
     pub fill: bool
 }
 
-impl Triangle {
+impl Polygon {
     pub fn new(window: &Window) -> Result<Self> {
         let gl = window.get_gl();
 
@@ -48,7 +48,7 @@ impl Triangle {
     }
 }
 
-impl RenderInstance for Triangle {
+impl RenderInstance for Polygon {
     fn render_instance(&self) {
         self.program.bind();
         self.vao.bind();
