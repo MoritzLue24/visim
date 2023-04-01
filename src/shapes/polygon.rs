@@ -10,12 +10,17 @@ pub struct Polygon {
 }
 
 impl Polygon {
-    pub fn new(window: &Window, vertices: &[Vertex]) -> Result<Self> {
+    pub fn new<V: Into<Vertex>>(window: &Window, vertices: Vec<V>) -> Result<Self> {
         let gl = window.get_gl();
         
+        let mut data = Vec::<Vertex>::new();
+        for vertex in vertices {
+            data.push(vertex.into())
+        }
+
         let vbo = ArrayBuffer::new(&gl);
         vbo.bind();
-        vbo.static_draw_data(&vertices);
+        vbo.static_draw_data(&data);
 
         let vao = VertexArray::new(&gl);
         vao.bind();
