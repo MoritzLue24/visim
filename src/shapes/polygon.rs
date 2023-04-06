@@ -10,7 +10,7 @@ pub struct Polygon {
 }
 
 impl Polygon {
-    pub fn new<V: Into<Vertex>>(window: &Window, vertices: Vec<V>) -> Result<Self> {
+    pub fn new<V: Into<Vertex>>(window: &Window, vertices: Vec<V>) -> Self {
         let gl = window.get_gl();
         
         let mut data = Vec::<Vertex>::new();
@@ -29,13 +29,13 @@ impl Polygon {
         vbo.unbind();
         vao.unbind();
 
-        Ok(Self {
+        Self {
             _vbo: vbo,
             vao,
             gl,
             program: window.get_program(),
             fill: true
-        })
+        }
     }
 
     pub fn set_program(&mut self, program: Program) {
