@@ -3,12 +3,11 @@
 fn main() -> visim::Result<()> {
     let mut window = visim::Window::new("Hello world", 1280, 720)?;
 
-    let mut t = visim::shapes::Polygon::new(&window, vec![
+    let t = visim::shapes::Polygon::new(&window, vec![
         ((-0.5, -0.5), (1.0, 0.0, 0.0)),
         ((0.5, -0.5), (0.0, 1.0, 0.0)),
-        ((0.0, 0.5), (0.0, 0.0, 1.0)),
+        // ((0.0, 0.5), (0.0, 0.0, 1.0)),
     ])?;
-    t.fill = true;   
 
     while window.is_open() {
         for event in window.get_events() {
