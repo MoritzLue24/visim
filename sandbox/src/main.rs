@@ -7,7 +7,7 @@ fn main() -> visim::Result<()> {
         ((-0.5, -0.5), (1.0, 0.0, 0.0)),
         ((0.5, -0.5), (0.0, 1.0, 0.0)),
         // ((0.0, 0.5), (0.0, 0.0, 1.0)),
-    ])?;
+    ]);
 
     while window.is_open() {
         for event in window.get_events() {
