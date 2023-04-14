@@ -1,4 +1,4 @@
-use crate::{render::{ArrayBuffer, VertexArray}, Program, Vertex, Window};
+use crate::{render::{ArrayBuffer, VertexArray}, Program, Vertex, Window, RenderInstance};
 
 
 
@@ -32,5 +32,14 @@ impl Line {
             gl,
             program: window.get_program()
         }
+    }
+}
+
+impl RenderInstance for Line {
+    fn render_instance(&self) {
+        self.program.bind();
+        self.vao.bind();
+        
+        unsafe { self.gl.DrawArrays(gl::LINE, 0, 2) }
     }
 }
