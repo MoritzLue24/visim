@@ -1,4 +1,4 @@
-use crate::{render::{Program, ArrayBuffer, VertexArray, Vertex}, RenderInstance, Result, Window};
+use crate::{render::{Program, ArrayBuffer, VertexArray, Vertex}, RenderInstance, Window};
 
 
 pub struct Polygon {
