@@ -33,6 +33,14 @@ impl Line {
             program: window.get_program()
         }
     }
+
+    pub fn set_program(&mut self, program: Program) {
+        self.program = program;
+    }
+
+    pub fn render(&self) {
+        self.render_instance()
+    }
 }
 
 impl RenderInstance for Line {
