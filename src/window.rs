@@ -1,10 +1,12 @@
+use glfw::Context;
+
 use crate::{err, Event, Result, render::Program};
 
 
 pub struct Window {
-    sdl_win: sdl2::video::Window,
-    sdl_event_pump: sdl2::EventPump,
-    _sdl_gl_ctx: sdl2::video::GLContext,
+    glfw: glfw::Glfw,
+    glfw_win: glfw::Window,
+    glfw_events: sdl2::EventPump,
     gl: gl::Gl,
     program: Program,
     open: bool
@@ -12,19 +14,12 @@ pub struct Window {
 
 impl Window {
     pub fn new(title: &str, width: u32, height: u32) -> Result<Self> {
-        let sdl = sdl2::init().map_err(|e| err::new(&e))?;
-        let video_subsystem = sdl.video().map_err(|e| err::new(&e))?;
-        let gl_attr = video_subsystem.gl_attr();
-        gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
-        gl_attr.set_context_version(4, 5);
+        // gl_attr.set_context_version(4, 5);
+        let glfw = glfw::init(glfw::FAIL_ON_ERRORS).map_err(|e| err::new(e))?;
+        let (window, events) = glfw.create_window(width, height, title, glfw::WindowMode::Windowed).ok_or(err::new("Window could not be initialized"))?;
+        window.make_current();
 
-        let window = video_subsystem.window(title, width, height).opengl().build()
-            .map_err(|e| err::new(&e.to_string()))?;
-        let event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
-
-        let gl_ctx = window.gl_create_context().map_err(|e| err::new(&e))?;
         let gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as _);
-        
         let program = Program::default(&gl)?;
 
         unsafe {
@@ -35,10 +30,10 @@ impl Window {
         }
 
         Ok(Self {
-            sdl_win: window,
-            sdl_event_pump: event_pump,
+            glfw,
+            glfw_win: window,
+            glfw_events: events,
             gl,
-            _sdl_gl_ctx: gl_ctx,
             open: true,
             program
         })
@@ -59,7 +54,9 @@ impl Window {
 
     pub fn get_events(&mut self) -> Vec<Event> {
         let mut events = Vec::new();
-        for event in self.sdl_event_pump.poll_iter() {
+        self.glfw.poll_events();
+
+        for event in glfw::flush_messages(self.glfw_events) {
             match Event::from(event) {
                 Ok(e) => { 
                     match e {
@@ -81,10 +78,10 @@ impl Window {
     }
 
     pub fn is_open(&self) -> bool {
-        self.open
+        self.glfw_win.should_close()
     }
  
     pub fn close(&mut self) {
-        self.open = false;
+        self.glfw_win.set_should_close(true);
     }
 }

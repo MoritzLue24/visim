@@ -1,8 +1,7 @@
 
-pub type Key = sdl2::keyboard::Keycode;
-pub type Mod = sdl2::keyboard::Mod;
-pub type MouseButton = sdl2::mouse::MouseButton;
-pub type MouseWheelDir = sdl2::mouse::MouseWheelDirection;
+pub type Key = glfw::Key;
+// pub type MouseButton = sdl2::mouse::MouseButton;
+// pub type MouseWheelDir = sdl2::mouse::MouseWheelDirection;
 
 
 #[derive(Debug, Clone)]
@@ -18,7 +17,18 @@ pub enum Event {
 }
 
 impl Event {
-    pub fn from(value: sdl2::event::Event) -> Result<Self, sdl2::event::Event> {
+    pub fn from(value: glfw::WindowEvent) -> Result<Self, glfw::WindowEvent> {
+        // TODO
+        match value {
+            glfw::WindowEvent::Close => Ok(Self::Quit),
+            glfw::WindowEvent::Key(key, action, modifier) => match action {
+                glfw::Action::Press => Ok(Self::KeyDown { key, modifier: () }),
+                glfw::Action::Release => ,
+                _ => Err(value)
+            },
+            _ => Err(value)
+        }
+
         match value {
             sdl2::event::Event::Quit { .. } => Ok(Self::Quit),
             sdl2::event::Event::KeyDown { keycode, keymod, .. } => Ok(Self::KeyDown { key: keycode.unwrap(), modifier: keymod }),
