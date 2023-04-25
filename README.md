@@ -1,3 +1,2 @@
 # visim
-The sdl2 version of visim.
-I will delete this branch, i think.
+A rust library to simulate and visualize algorithms and data structures. I made this for personal purpose so dont expect long time maintenance.A rust library to simulate and visualize algorithms and data structures. I made this for personal purpose so dont expect long time maintenance.
