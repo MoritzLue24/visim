@@ -3,7 +3,7 @@ use crate::{Vector2, Color};
 
 #[derive(Clone, Copy, Debug)]
 #[repr(C, packed)]
-pub struct Vertex where {
+pub struct Vertex {
     pub pos: Vector2,
     pub color: Color
 }
