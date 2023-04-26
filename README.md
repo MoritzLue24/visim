@@ -10,7 +10,7 @@ A rust library based on opengl and sdl2 used to simulate and visualize algorithm
 	- [X] Customizable `Shader` `Program`s
 	- [ ] Outline thickness at shapes
 	- [ ] Bitmap fonts
-        - [ ] Textures
+    - [ ] Textures
 	- [ ] Batch rendering
 - [ ] Custom UI module
 	- [ ] Surfaces holding T: impl Widgets
