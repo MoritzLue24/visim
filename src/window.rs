@@ -44,14 +44,6 @@ impl Window {
         })
     }
     
-    pub fn get_gl(&self) -> gl::Gl {
-        self.gl.clone()
-    }
-
-    pub fn get_program(&self) -> Program {
-        self.program.clone()
-    }
-
     pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
         unsafe { self.gl.ClearColor(r, g, b, a) }
         unsafe { self.gl.Clear(gl::COLOR_BUFFER_BIT) }
@@ -77,6 +69,7 @@ impl Window {
     }
 
     pub fn update(&self) {
+        // TODO: Execute a batched render call
         self.sdl_win.gl_swap_window();
     }
 
