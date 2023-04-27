@@ -1,5 +1,4 @@
 pub mod err;
-pub mod shapes;
 pub mod event;
 mod vector;
 mod color;
