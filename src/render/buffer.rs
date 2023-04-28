@@ -12,28 +12,29 @@ pub trait Type {
     const TYPE: gl::types::GLuint;
 }
 
-struct ArrayType;
+pub struct ArrayType;
 impl Type for ArrayType {
     const TYPE: gl::types::GLuint = gl::ARRAY_BUFFER;
 }
 
-struct ElementArrayType;
+pub struct ElementArrayType;
 impl Type for ElementArrayType {
     const TYPE: gl::types::GLuint = gl::ELEMENT_ARRAY_BUFFER;
 }
 
 
-struct Buffer<T: Type> {
+pub struct Buffer<T: Type> {
     gl: gl::Gl,
     id: gl::types::GLuint,
+    usage: DrawUsage,
     _marker: std::marker::PhantomData<T>
 }
 
 impl<T: Type> Buffer<T> {
-    pub fn new(gl: &gl::Gl) -> Self {
+    pub fn new(gl: &gl::Gl, usage: DrawUsage) -> Self {
         let mut id = 0;
         unsafe { gl.GenBuffers(1, &mut id) }
-        Self { gl: gl.clone(), id, _marker: std::marker::PhantomData }
+        Self { gl: gl.clone(), id, usage, _marker: std::marker::PhantomData }
     }
 
     pub fn bind(&self) {
@@ -44,13 +45,13 @@ impl<T: Type> Buffer<T> {
         unsafe { self.gl.BindBuffer(T::TYPE, 0) }
     }
 
-    pub fn write_data<U>(&self, usage: DrawUsage, data: &[U]) {
+    pub fn write_data<U>(&self, data: &[U]) {
         unsafe {
             self.gl.BufferData(
                 T::TYPE,
                 (data.len() * std::mem::size_of::<U>()) as gl::types::GLsizeiptr,
                 data.as_ptr() as *const gl::types::GLvoid,
-                usage as u32
+                self.usage as u32
             );
         }
     }

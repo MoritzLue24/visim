@@ -1,7 +1,7 @@
 mod vertex;
 mod shader;
 mod program;
-mod buffer;
+pub mod buffer;
 mod vertex_array;
 
 pub use vertex::Vertex;
