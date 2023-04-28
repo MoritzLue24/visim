@@ -1,4 +1,4 @@
-use crate::{err, Event, Result, render::Program};
+use crate::{err, Event, Result, render::{Program, buffer, VertexArray}, Vertex};
 
 
 pub struct Window {
@@ -7,6 +7,9 @@ pub struct Window {
     sdl_event_pump: sdl2::EventPump,
     gl: gl::Gl,
     program: Program,
+    _vbo: buffer::Array,
+    _vao: VertexArray,
+    _ibo: buffer::ElementArray,
     open: bool
 }
 
@@ -25,7 +28,13 @@ impl Window {
 
         let gl_ctx = window.gl_create_context().map_err(|e| err::new(e))?;
         let gl = gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as _);
+        
+
+        Vertex::attrib_pointers(&gl);
         let program = Program::default(&gl)?;
+        let vbo = buffer::Array::new(&gl, buffer::DrawUsage::Dynamic);
+        let vao = VertexArray::new(&gl);
+        let ibo = buffer::ElementArray::new(&gl, buffer::DrawUsage::Dynamic);
 
         unsafe {
             gl.Viewport(0, 0,
@@ -39,8 +48,11 @@ impl Window {
             sdl_win: window,
             sdl_event_pump: event_pump,
             gl,
-            open: true,
-            program
+            _vbo: vbo,
+            _vao: vao,
+            _ibo: ibo,
+            program,
+            open: true
         })
     }
     
@@ -71,6 +83,8 @@ impl Window {
     pub fn update(&self) {
         // TODO: Execute a batched render call
         self.sdl_win.gl_swap_window();
+        self._vbo.write_data::<Vertex>(&[]);
+        self._ibo.write_data::<i32>(&[]);
     }
 
     pub fn is_open(&self) -> bool {
