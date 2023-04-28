@@ -1,26 +1,35 @@
 
-pub trait BufferType {
-    const BUFFER_TYPE: gl::types::GLuint;
+pub enum DrawUsage {
+    Static = 35044,
+    Dynamic = 35048,
+    Stream = 35040
 }
 
-pub struct ArrayBufferType;
-impl BufferType for ArrayBufferType {
-    const BUFFER_TYPE: gl::types::GLuint = gl::ARRAY_BUFFER;
+pub type Array = Buffer<ArrayType>;
+pub type ElementArray = Buffer<ElementArrayType>;
+
+pub trait Type {
+    const TYPE: gl::types::GLuint;
 }
 
-pub struct ElementArrayBufferType;
-impl BufferType for ElementArrayBufferType {
-    const BUFFER_TYPE: gl::types::GLuint = gl::ELEMENT_ARRAY_BUFFER;
+struct ArrayType;
+impl Type for ArrayType {
+    const TYPE: gl::types::GLuint = gl::ARRAY_BUFFER;
+}
+
+struct ElementArrayType;
+impl Type for ElementArrayType {
+    const TYPE: gl::types::GLuint = gl::ELEMENT_ARRAY_BUFFER;
 }
 
 
-pub struct Buffer<T: BufferType> {
+struct Buffer<T: Type> {
     gl: gl::Gl,
     id: gl::types::GLuint,
     _marker: std::marker::PhantomData<T>
 }
 
-impl<T: BufferType> Buffer<T> {
+impl<T: Type> Buffer<T> {
     pub fn new(gl: &gl::Gl) -> Self {
         let mut id = 0;
         unsafe { gl.GenBuffers(1, &mut id) }
@@ -28,26 +37,26 @@ impl<T: BufferType> Buffer<T> {
     }
 
     pub fn bind(&self) {
-        unsafe { self.gl.BindBuffer(T::BUFFER_TYPE, self.id) }
+        unsafe { self.gl.BindBuffer(T::TYPE, self.id) }
     }
 
     pub fn unbind(&self) {
-        unsafe { self.gl.BindBuffer(T::BUFFER_TYPE, 0) }
+        unsafe { self.gl.BindBuffer(T::TYPE, 0) }
     }
 
-    pub fn static_draw_data<U>(&self, data: &[U]) {
+    pub fn write_data<U>(&self, usage: DrawUsage, data: &[U]) {
         unsafe {
             self.gl.BufferData(
-                T::BUFFER_TYPE,
+                T::TYPE,
                 (data.len() * std::mem::size_of::<U>()) as gl::types::GLsizeiptr,
                 data.as_ptr() as *const gl::types::GLvoid,
-                gl::STATIC_DRAW
+                usage as u32
             );
         }
     }
 }
 
-impl<T: BufferType> Drop for Buffer<T> {
+impl<T: Type> Drop for Buffer<T> {
     fn drop(&mut self) {
         unsafe { self.gl.DeleteBuffers(1, &mut self.id) }
     }
