@@ -54,6 +54,7 @@ impl<B: Type, T> Buffer<B, T> {
     }
 
     pub fn write_data(&self, data: &[T]) {
+        self.bind();
         unsafe {
             self.gl.BufferData(
                 B::TYPE,
@@ -62,6 +63,7 @@ impl<B: Type, T> Buffer<B, T> {
                 self.usage as u32
             );
         }
+        self.unbind();
     }
 
     pub fn len(&self) -> i32 {
