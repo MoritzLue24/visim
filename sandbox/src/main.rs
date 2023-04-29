@@ -12,7 +12,12 @@ fn main() -> visim::Result<()> {
             }
         }
     
-        window.clear(0.5, 0.2, 0.7, 1.0);
+        window.renderer.clear((0.5, 0.2, 0.7, 1.0));
+        window.renderer.polygon(vec![
+            ((-0.5, 0.0), (1.0, 0.0, 0.0)),
+            ((0.0, 0.5), (0.0, 1.0, 0.0)),
+            ((0.5, 0.0), (0.0, 0.0, 1.0))
+        ]);
         window.update();
     }
 
