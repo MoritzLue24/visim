@@ -8,6 +8,7 @@ A rust library based on opengl and sdl2 used to simulate and visualize algorithm
 	- [X] Custom `Vector` type
 	- [X] `Window` struct for abstraction
 	- [X] Customizable `Shader` `Program`s
+	- [X] Render struct 
 	- [ ] `Rect` shape 
 	- [ ] `Circle` shape 
 	- [ ] Outline thickness at shapes
