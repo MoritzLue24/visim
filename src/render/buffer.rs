@@ -1,4 +1,5 @@
 
+#[derive(Clone, Copy)]
 pub enum DrawUsage {
     Static = 35044,
     Dynamic = 35048,
