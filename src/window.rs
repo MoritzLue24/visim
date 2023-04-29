@@ -2,10 +2,13 @@ use crate::{err, Event, Result, Renderer};
 
 
 pub struct Window {
+    open: bool,
+    pub renderer: Renderer,
+
+    // Declared last to drop last 
+    // (to prevent gl error 1282 on glDeleteProgram)
     sdl_win: sdl2::video::Window,
     sdl_event_pump: sdl2::EventPump,
-    pub renderer: Renderer,
-    open: bool
 }
 
 impl Window {
@@ -23,10 +26,10 @@ impl Window {
         let renderer = Renderer::new(&window)?;
 
         Ok(Self {
-            sdl_win: window,
-            sdl_event_pump: event_pump,
+            open: true,
             renderer,
-            open: true
+            sdl_win: window,
+            sdl_event_pump: event_pump
         })
     }
 

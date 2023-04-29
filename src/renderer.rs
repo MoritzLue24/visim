@@ -2,13 +2,17 @@ use crate::{render::{buffer, VertexArray}, Result, Program, err, Vertex, Color};
 
 
 pub struct Renderer {
-    _sdl_gl_ctx: sdl2::video::GLContext,
+    last_ibo_i: u32,
+
     gl: gl::Gl,
     program: Program,
     pub vbo: buffer::Array<Vertex>,
     ibo: buffer::ElementArray<u32>,
     vao: VertexArray,
-    last_ibo_i: i32
+    
+    // Declared last to drop last 
+    // (to prevent gl error 1282 on glDelete)
+    _sdl_gl_ctx: sdl2::video::GLContext
 }
 
 impl Renderer {
@@ -34,13 +38,9 @@ impl Renderer {
         };
 
         Ok(Self { 
+            last_ibo_i: 0,
+            gl, program, vbo, ibo, vao,
             _sdl_gl_ctx: gl_ctx,
-            gl,
-            program,
-            vbo,
-            ibo,
-            vao,
-            last_ibo_i: 0
         })
     }
 
@@ -62,13 +62,22 @@ impl Renderer {
         }
     }
 
-    pub fn polygon<V: Into<Vertex>>(&self, vertices: Vec<V>) {
+    pub fn polygon<V: Into<Vertex>>(&mut self, vertices: Vec<V>) {
         let mut data = Vec::<Vertex>::new();
         for vertex in vertices {
             data.push(vertex.into());
-        }
-
+        }    
         self.vbo.write_data(&data);
-        self.ibo.write_data(&[0, 1, 2]);
+
+        // Implement an algorithm that creates indices for
+        // triangles based on the vertices.
+        todo!();
+
+        // let mut indices = Vec::new();
+        // for _ in 0..data.len() {
+        //     indices.push(self.last_ibo_i);
+        //     self.last_ibo_i += 1;
+        // }
+        // self.ibo.write_data(&indices);
     }
 }
