@@ -55,13 +55,13 @@ impl Window {
             open: true
         })
     }
-    
-    pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
-        self.vbo.write_data::<Vertex>(&[]);
-        self.ibo.write_data::<i32>(&[]);
 
-        unsafe { self.gl.ClearColor(r, g, b, a) }
-        unsafe { self.gl.Clear(gl::COLOR_BUFFER_BIT) }
+    pub fn is_open(&self) -> bool {
+        self.open
+    }
+ 
+    pub fn close(&mut self) {
+        self.open = false;
     }
 
     pub fn get_events(&mut self) -> Vec<Event> {
@@ -88,11 +88,11 @@ impl Window {
         self.sdl_win.gl_swap_window();
     }
 
-    pub fn is_open(&self) -> bool {
-        self.open
-    }
- 
-    pub fn close(&mut self) {
-        self.open = false;
+    pub fn clear(&self, r: f32, g: f32, b: f32, a: f32) {
+        self.vbo.write_data::<Vertex>(&[]);
+        self.ibo.write_data::<i32>(&[]);
+
+        unsafe { self.gl.ClearColor(r, g, b, a) }
+        unsafe { self.gl.Clear(gl::COLOR_BUFFER_BIT) }
     }
 }
