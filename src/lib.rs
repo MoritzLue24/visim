@@ -3,10 +3,12 @@ pub mod event;
 mod vector;
 mod color;
 mod render;
+mod renderer;
 mod window;
 
 pub use err::Result;
 pub use event::Event;
+pub use renderer::Renderer;
 pub use window::Window;
 pub use vector::Vector2;
 pub use color::Color;
