@@ -29,10 +29,10 @@ impl Renderer {
         vbo.bind();
         ibo.bind();
         Vertex::attrib_pointers(&gl);
-        ibo.unbind();
-        vbo.unbind();
         vao.unbind();
-
+        vbo.unbind();
+        ibo.unbind();
+ 
         let win_size = window.size();
         unsafe {
             gl.Viewport(0, 0,
@@ -51,7 +51,8 @@ impl Renderer {
     pub fn render(&self) {
         self.program.bind();
         self.vao.bind();
-        unsafe {self.gl.DrawElements(gl::TRIANGLES, self.ibo.len(), gl::UNSIGNED_INT, 0 as *const std::ffi::c_void) }
+        unsafe {self.gl.DrawElements(gl::TRIANGLES, self.vbo.len(), gl::UNSIGNED_INT, 0 as *const std::ffi::c_void) }
+        self.vao.unbind();
     }
 
     pub fn clear<C: Into<Color>>(&self, color: C) {
@@ -74,7 +75,7 @@ impl Renderer {
         // triangles based on the vertices.
         todo!();
 
-        // let mut indices = Vec::new();
+        // let indices = vec![0, 1, 2];
         // for _ in 0..data.len() {
         //     indices.push(self.last_ibo_i);
         //     self.last_ibo_i += 1;
