@@ -18,7 +18,7 @@ pub use render::{Program, ShaderType, Shader, Vertex};
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn win_loop() -> Result<()> {
         let mut window = Window::new("Hello world", 800, 600)?;
@@ -28,7 +28,7 @@ mod tests {
                     _ => ()
                 }
             }
-            window.clear(0.5, 0.5, 0.7, 1.0);
+            window.renderer.clear((0.5, 0.5, 0.7));
             window.update();
         }
         Ok(())
