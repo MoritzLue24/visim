@@ -63,10 +63,7 @@ impl Renderer {
     }
 
     pub fn polygon<V: Into<Vertex>>(&mut self, vertices: Vec<V>) {
-        let mut data = Vec::<Vertex>::new();
-        for vertex in vertices {
-            data.push(vertex.into());
-        }    
+        let data: Vec<Vertex> = vertices.into_iter().map(|v| v.into()).collect();
         self.vbo.write_data(&data);
 
         // Implement an algorithm that creates indices for
