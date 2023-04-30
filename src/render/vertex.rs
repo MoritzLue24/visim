@@ -36,10 +36,6 @@ impl Vertex {
                 (std::mem::size_of::<Self>()) as gl::types::GLint,              // Byte offset between consecutive attributes
                 (std::mem::size_of::<Vector2>()) as *const gl::types::GLvoid    // Offset of first component
             );
-
-            // Fix gl error 1282
-            // (occurs on second glVertexAttribPointer call).
-            todo!()
         }
     }
 }

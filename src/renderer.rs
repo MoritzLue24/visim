@@ -6,9 +6,9 @@ pub struct Renderer {
 
     gl: gl::Gl,
     program: Program,
+    vao: VertexArray,
     pub vbo: buffer::Array<Vertex>,
     ibo: buffer::ElementArray<u32>,
-    vao: VertexArray,
     
     // Declared last to drop last 
     // (to prevent gl error 1282 on glDelete)
@@ -21,12 +21,16 @@ impl Renderer {
         let gl = gl::load_with(|s| window.subsystem().gl_get_proc_address(s) as _);
 
         let program = Program::default(&gl)?;
+        let vao = VertexArray::new(&gl);
         let vbo = buffer::Array::new(&gl, buffer::DrawUsage::Dynamic);
         let ibo = buffer::ElementArray::new(&gl, buffer::DrawUsage::Dynamic);
-        let vao = VertexArray::new(&gl);
 
         vao.bind();
+        vbo.bind();
+        ibo.bind();
         Vertex::attrib_pointers(&gl);
+        ibo.unbind();
+        vbo.unbind();
         vao.unbind();
 
         let win_size = window.size();
