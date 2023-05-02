@@ -23,7 +23,7 @@ impl Window {
         let window = video_subsystem.window(title, width, height).opengl().build()
             .map_err(|e| err::new(&e.to_string()))?;
         let event_pump = sdl.event_pump().map_err(|e| err::new(e))?;
-        let renderer = Renderer::new(&window)?;
+        let renderer = Renderer::new(&window, 1000)?;
 
         Ok(Self {
             open: true,
