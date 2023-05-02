@@ -25,6 +25,7 @@ impl Type for ElementArrayType {
 
 
 pub struct Buffer<B: Type, T> {
+    data_offset: isize,
     gl: gl::Gl,
     id: gl::types::GLuint,
     usage: DrawUsage,
@@ -37,6 +38,7 @@ impl<B: Type, T> Buffer<B, T> {
         let mut id = 0;
         unsafe { gl.GenBuffers(1, &mut id) }
         Self {
+            data_offset: 0,
             gl: gl.clone(),
             id,
             usage,
@@ -53,12 +55,15 @@ impl<B: Type, T> Buffer<B, T> {
         unsafe { self.gl.BindBuffer(B::TYPE, 0) }
     }
 
-    pub fn write_data(&self, data: &[T]) {
+    pub fn write_data(&mut self, data: &[T]) {
+        let data_size = data.len() * std::mem::size_of::<T>();
+        self.data_offset = data_size as isize;
+
         self.bind();
         unsafe {
             self.gl.BufferData(
                 B::TYPE,
-                (data.len() * std::mem::size_of::<T>()) as gl::types::GLsizeiptr,
+                data_size as gl::types::GLsizeiptr,
                 data.as_ptr() as *const gl::types::GLvoid,
                 self.usage as u32
             );
@@ -66,12 +71,46 @@ impl<B: Type, T> Buffer<B, T> {
         self.unbind();
     }
 
-    pub fn len(&self) -> i32 {
+    pub fn allocate_data(&mut self, bytes: isize) {
+        self.data_offset = 0;
+
+        self.bind();
+        unsafe {
+            self.gl.BufferData(
+                B::TYPE,
+                bytes,
+                std::ptr::null(),
+                self.usage as u32
+            );
+        }
+        self.unbind();
+    }
+
+    pub fn append_data(&mut self, data: &[T]) {
+        let data_size = data.len() * std::mem::size_of::<T>();
+
+        self.bind();
+        unsafe {
+            self.gl.BufferSubData(
+                B::TYPE,
+                self.data_offset,
+                data_size as gl::types::GLsizeiptr,
+                data.as_ptr() as *const gl::types::GLvoid
+            )
+        }
+        self.unbind();
+        self.data_offset += data_size as isize;
+    }
+
+    pub fn size(&self) -> i32 {
         let mut bytes = 0;
         self.bind();
-        unsafe { self.gl.GetBufferParameteriv(B::TYPE, gl::BUFFER_SIZE, &mut bytes) };
-        self.unbind();
-        bytes / std::mem::size_of::<T>() as i32
+        unsafe { self.gl.GetBufferParameteriv(B::TYPE, gl::BUFFER_SIZE, &mut bytes) }
+        bytes
+    }
+
+    pub fn len(&self) -> i32 {
+        self.size() / std::mem::size_of::<T>() as i32
     }
 }
 
