@@ -40,7 +40,7 @@ impl Program {
                     error.as_ptr() as *mut gl::types::GLchar
             ) }
 
-            return Err(err::link_program_error(&error.to_string_lossy()))
+            return Err(err::link_program(&error.to_string_lossy()))
         }
 
         for shader in shaders {

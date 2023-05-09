@@ -1,39 +1,32 @@
-
 pub type Result<T> = std::result::Result<T, Error>;
 
 
-#[track_caller]
-pub fn new<T: std::fmt::Debug>(msg: T) -> Error {
-    let location = std::panic::Location::caller();
-    Error { kind: Kind::Other, msg: format!(
-        "\"{:?}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
-    )}
+macro_rules! gen_err_fn {
+    ($(pub fn $fn_ident:ident => Kind::$var_ident:ident),*) => {
+        $(
+            #[track_caller]
+            pub fn $fn_ident<T: std::fmt::Debug>(msg: T) -> Error {
+                let location = std::panic::Location::caller();
+                Error { kind: Kind::$var_ident, msg: format!(
+                    "\"{:?}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
+                )}
+            }
+        )*
+    };
 }
 
-#[track_caller]
-pub fn parse_shader_error(msg: &str) -> Error {
-    let location = std::panic::Location::caller();
-    Error { kind: Kind::ParseShaderError, msg: format!(
-        "\"{}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
-    )}
+gen_err_fn! {
+    pub fn new => Kind::Other,
+    pub fn parse_shader => Kind::ParseShaderError,
+    pub fn link_program => Kind::LinkProgramError
 }
-
-#[track_caller]
-pub fn link_program_error(msg: &str) -> Error {
-    let location = std::panic::Location::caller();
-    Error { kind: Kind::LinkProgramError, msg: format!(
-        "\"{}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
-    )}
-}
-
 
 #[derive(Debug, PartialEq)]
 pub enum Kind {
     Other,
     ParseShaderError,
-    LinkProgramError
+    LinkProgramError,
 }
-
 
 pub struct Error {
     pub kind: Kind,
