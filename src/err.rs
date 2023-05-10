@@ -1,31 +1,50 @@
 pub type Result<T> = std::result::Result<T, Error>;
 
 
-macro_rules! gen_err_fn {
-    ($(pub fn $fn_ident:ident => Kind::$var_ident:ident),*) => {
+macro_rules! gen_err_kind {
+    (
+        $(#[$enum_attr:meta])*
+        pub enum Kind {
+            $($var_ident:ident => fn $fn_ident:ident($($param_ident:ident: $param_ty:ty),*)),*
+        }
+    ) => {
+        $(#[$enum_attr])*
+        pub enum Kind {
+            $($var_ident($($param_ty),*)),*
+        }
+
         $(
-            #[track_caller]
-            pub fn $fn_ident<T: std::fmt::Debug>(msg: T) -> Error {
+            pub fn $fn_ident<T: std::fmt::Debug>(msg: T$(, $param_ident: $param_ty)*) -> Error {
                 let location = std::panic::Location::caller();
-                Error { kind: Kind::$var_ident, msg: format!(
-                    "\"{:?}\" at file: \"{}\", line: {}", msg, location.file(), location.line()
-                )}
+                Error { kind: Kind::$var_ident($($param_ident),*), msg: format!(
+                    "{:?} at file: \"{}\", line: {}", msg, location.file(), location.line()
+                ) }
             }
         )*
     };
 }
 
-gen_err_fn! {
-    pub fn new => Kind::Other,
-    pub fn parse_shader => Kind::ParseShaderError,
-    pub fn link_program => Kind::LinkProgramError
+#[derive(Debug, PartialEq)]
+pub enum GlCode {
+    InvalidEnum = 1280,
+    InvalidValue = 1281,
+    InvalidOperation = 1282,
+    StackOverflow = 1283,
+    StackUnderflow = 1284,
+    OutOfMemory = 1285,
+    InvalidFramebufferOperation = 1286,
+    ContextLost = 1287,
+    TableTooLarge = 32817,
 }
 
-#[derive(Debug, PartialEq)]
-pub enum Kind {
-    Other,
-    ParseShaderError,
-    LinkProgramError,
+gen_err_kind! {
+    #[derive(Debug, PartialEq)]
+    pub enum Kind {
+        Other => fn new(),
+        ParseShaderError => fn parse_shader(),
+        LinkProgramError => fn link_program(),
+        OpenGl => fn open_gl(code: GlCode)
+    }
 }
 
 pub struct Error {
