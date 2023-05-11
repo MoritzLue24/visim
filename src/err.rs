@@ -1,5 +1,9 @@
-pub type Result<T> = std::result::Result<T, Error>;
+use num_traits::FromPrimitive;
+use num_derive::FromPrimitive;
+use paste::paste;
 
+
+pub type Result<T> = std::result::Result<T, Error>;
 
 macro_rules! gen_err_kind {
     (
@@ -14,17 +18,44 @@ macro_rules! gen_err_kind {
         }
 
         $(
+            #[track_caller]
             pub fn $fn_ident<T: std::fmt::Debug>(msg: T$(, $param_ident: $param_ty)*) -> Error {
                 let location = std::panic::Location::caller();
                 Error { kind: Kind::$var_ident($($param_ident),*), msg: format!(
                     "{:?} at file: \"{}\", line: {}", msg, location.file(), location.line()
                 ) }
             }
+            
+            paste! {
+                pub fn [<$fn_ident _loc>]<T: std::fmt::Debug>(
+                    location: &std::panic::Location,
+                    msg: T
+                    $(, $param_ident: $param_ty)*) -> Error 
+                {
+                    Error { kind: Kind::$var_ident($($param_ident),*), msg: format!(
+                        "{:?} at file: \"{}\", line: {}", msg, location.file(), location.line()
+                    ) }
+                }
+            }
         )*
     };
 }
 
-#[derive(Debug, PartialEq)]
+#[track_caller]
+pub fn gl_call<T, F: FnOnce() -> T>(gl: &gl::Gl, fn_call: F) -> Result<T> {
+    let res = fn_call();
+    let err = unsafe { gl.GetError() };
+    if err != gl::NO_ERROR {
+        return Err::<T, Error>(open_gl_loc(std::panic::Location::caller(),
+            "OpenGl error occured",
+            GlCode::from_u32(err).unwrap_or_else(||
+                panic!("Gl error code \"{}\" not implemented for `GlCode`", err))
+        ));
+    }
+    Ok(res)
+}
+
+#[derive(Debug, PartialEq, FromPrimitive)]
 pub enum GlCode {
     InvalidEnum = 1280,
     InvalidValue = 1281,
