@@ -13,12 +13,12 @@ A rust library based on opengl and sdl2 used to simulate and visualize algorithm
 	- [X] `Window` struct for abstraction
 	- [X] Customizable `Shader` `Program`s
 	- [X] Render struct 
+	- [X] Batch rendering
 	- [ ] `Rect` shape 
 	- [ ] `Circle` shape 
 	- [ ] Outline thickness at shapes
 	- [ ] Bitmap fonts
     - [ ] Textures
-	- [ ] Batch rendering
 - [ ] Custom UI module
 	- [ ] Surfaces holding T: impl Widgets
 	- [ ] Label
