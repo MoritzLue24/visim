@@ -21,6 +21,11 @@ impl Renderer {
         let gl_ctx = window.gl_create_context().map_err(|e| err::new(e))?;
         let gl = gl::load_with(|s| window.subsystem().gl_get_proc_address(s) as _);
 
+        unsafe {
+            gl.Enable(gl::DEBUG_OUTPUT);
+            gl.DebugMessageCallback(Some(err::gl_debug_callback), std::ptr::null());
+        }
+
         let program = Program::default(&gl)?;
         let vao = VertexArray::new(&gl);
         let mut vbo = buffer::Array::new(&gl, buffer::DrawUsage::Dynamic);
