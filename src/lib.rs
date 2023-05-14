@@ -22,7 +22,7 @@ mod tests {
     #[test]
     fn win_loop() -> Result<()> {
         let mut window = Window::new("Hello world", 800, 600)?;
-        while window.is_open() {
+        if window.is_open() {
             for event in window.get_events() {
                 match event {
                     _ => ()
