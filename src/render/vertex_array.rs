@@ -11,6 +11,10 @@ impl VertexArray {
         Self { gl: gl.clone(), id }
     }
 
+    pub fn get_id(&self) -> gl::types::GLuint {
+        self.id
+    }
+
     pub fn bind(&self) {
         unsafe { self.gl.BindVertexArray(self.id) }
     }

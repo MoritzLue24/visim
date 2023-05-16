@@ -30,14 +30,15 @@ impl Renderer {
         let vao = VertexArray::new(&gl);
         let mut vbo = buffer::Array::new(&gl, buffer::DrawUsage::Dynamic);
         let mut ibo = buffer::ElementArray::new(&gl, buffer::DrawUsage::Dynamic);
-
+        
         vao.bind();
         vbo.bind();
         ibo.bind();
-        Vertex::attrib_pointers(&gl);
+        Vertex::attrib_pointers(&gl, vao.get_id());
         vao.unbind();
         vbo.unbind();
         ibo.unbind();
+
 
         vbo.allocate_data(std::mem::size_of::<Vertex>() as isize * max_vertices);
         ibo.allocate_data(std::mem::size_of::<u32>() as isize * max_vertices);

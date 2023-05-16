@@ -1,7 +1,6 @@
 use crate::{Vector2, Color};
 
 
-#[derive(Clone, Copy, Debug)]
 #[repr(C, packed)]
 pub struct Vertex {
     pub pos: Vector2,
@@ -13,10 +12,10 @@ impl Vertex {
         Self { pos: pos.into(), color: color.into() }
     }
 
-    pub fn attrib_pointers(gl: &gl::Gl) {
+    pub fn attrib_pointers(gl: &gl::Gl, vao_id: gl::types::GLuint) {
         unsafe {
             // Position
-            gl.EnableVertexAttribArray(0);
+            gl.EnableVertexArrayAttrib(vao_id, 0);
             gl.VertexAttribPointer(
                 0,               // Index of attribute
                 2,               // Number of components per attribute
@@ -27,7 +26,7 @@ impl Vertex {
             );
 
             // Color 
-            gl.EnableVertexAttribArray(1);
+            gl.EnableVertexArrayAttrib(vao_id, 1);
             gl.VertexAttribPointer(
                 1,               // Index of attribute
                 4,               // Number of components per attribute
@@ -36,6 +35,8 @@ impl Vertex {
                 (std::mem::size_of::<Self>()) as gl::types::GLint,              // Byte offset between consecutive attributes
                 (std::mem::size_of::<Vector2>()) as *const gl::types::GLvoid    // Offset of first component
             );
+
+            // Texture id 
         }
     }
 }
