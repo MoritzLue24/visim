@@ -19,6 +19,7 @@ A rust library based on opengl and sdl2 used to simulate and visualize algorithm
 	- [ ] Outline thickness at shapes
 	- [ ] Bitmap fonts
     - [ ] Textures
+	- [ ] Program::set_uniform_mat\*
 - [ ] Custom UI module
 	- [ ] Surfaces holding T: impl Widgets
 	- [ ] Label
