@@ -3,6 +3,7 @@ use gl::Gl;
 use crate::{err, Result};
 
 
+#[derive(Debug, Clone, Copy)]
 pub enum ShaderType {
     VertexShader = 35633,
     TessControlShader = 36488,
@@ -11,7 +12,6 @@ pub enum ShaderType {
     FragmentShader = 35632,
     ComputeShader = 37305
 }
-
 
 pub struct Shader {
     gl: Gl,
@@ -44,7 +44,11 @@ impl Shader {
                     error.as_ptr() as *mut gl::types::GLchar
             ) }
         
-            return Err(err::parse_shader(&error.to_string_lossy()))
+            return Err(err::parse_shader(format!(
+                "{:?}, {}",
+                kind,
+                &error.to_string_lossy()
+            )))
         }
 
         Ok(Shader { gl: gl.clone(), id })
