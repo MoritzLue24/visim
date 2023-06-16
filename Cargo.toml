@@ -2,6 +2,11 @@
 name = "visim"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
+license-file = "LICENSE"
+description = "A package that handles rendering for visualization and simulation"
+repository = "https://github.com/Monkvy/visim"
+keywords = ["graphics", "simulation", "visualization"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
