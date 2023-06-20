@@ -1,3 +1,5 @@
+use gl_dstruct::gl;
+
 
 pub type Result<T> = std::result::Result<T, Error>;
 

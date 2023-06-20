@@ -11,8 +11,8 @@ keywords = ["graphics", "simulation", "visualization"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-gl_debug = ["gl/debug"]
+gl_debug = ["gl_dstruct/debug"]
 
 [dependencies]
 sdl2 = "0.35.2"
-gl = "0.1.0"
+gl_dstruct = "0.2.0"

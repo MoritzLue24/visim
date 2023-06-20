@@ -1,11 +1,12 @@
 use crate::{render::{buffer, VertexArray}, Result, Program, err, Vertex, Color};
+use gl_dstruct::gl;
 
 
 pub struct Renderer {
     vertices_len: u32,
     max_vertices: isize,
 
-    gl: gl::Gl,
+    gl: gl_dstruct::Gl,
     program: Program,
     vao: VertexArray,
     pub vbo: buffer::Array<Vertex>,
@@ -19,7 +20,7 @@ pub struct Renderer {
 impl Renderer {
     pub fn new(window: &sdl2::video::Window, max_vertices: isize) -> Result<Self> {
         let gl_ctx = window.gl_create_context().map_err(|e| err::new(e))?;
-        let gl = gl::load_with(|s| window.subsystem().gl_get_proc_address(s) as _);
+        let gl = gl_dstruct::load_with(|s| window.subsystem().gl_get_proc_address(s) as _);
 
         unsafe {
             gl.Enable(gl::DEBUG_OUTPUT);

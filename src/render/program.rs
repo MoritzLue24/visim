@@ -1,22 +1,23 @@
 use std::ffi::CString;
+use gl_dstruct::gl;
 use crate::{render::Shader, err, Result, ShaderType};
 
 
 #[derive(Clone)]
 pub struct Program {
-    gl: gl::Gl,
+    gl: gl_dstruct::Gl,
     id: gl::types::GLuint
 }
 
 impl Program {
-    pub fn default(gl: &gl::Gl) -> Result<Self> {
+    pub fn default(gl: &gl_dstruct::Gl) -> Result<Self> {
         Self::from_shaders(gl, &[
             Shader::from_source(gl, include_str!("../shaders/default.vert"), ShaderType::VertexShader)?,
             Shader::from_source(gl, include_str!("../shaders/default.frag"), ShaderType::FragmentShader)?
         ])
     }
 
-    pub fn from_shaders(gl: &gl::Gl, shaders: &[Shader]) -> Result<Self> {
+    pub fn from_shaders(gl: &gl_dstruct::Gl, shaders: &[Shader]) -> Result<Self> {
         let id = unsafe { gl.CreateProgram() };
         for shader in shaders {
             unsafe { gl.AttachShader(id, shader.id()) }
@@ -54,82 +55,82 @@ impl Program {
         unsafe { self.gl.UseProgram(self.id) }
     }
 
-    fn get_uniform_loc(&self, gl: &gl::Gl, name: &str) -> i32 {
+    fn get_uniform_loc(&self, gl: &gl_dstruct::Gl, name: &str) -> i32 {
         unsafe { gl.GetUniformLocation(self.id, name.as_ptr() as *const gl::types::GLchar) }
     }
 
 
-    pub fn set_uniform_1f(&self, gl: &gl::Gl, name: &str, v0: f32) {
+    pub fn set_uniform_1f(&self, gl: &gl_dstruct::Gl, name: &str, v0: f32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1f(loc, v0) }
     }
     
-    pub fn set_uniform_2f(&self, gl: &gl::Gl, name: &str, v0: f32, v1: f32) {
+    pub fn set_uniform_2f(&self, gl: &gl_dstruct::Gl, name: &str, v0: f32, v1: f32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform2f(loc, v0, v1) }
     }
 
-    pub fn set_uniform_3f(&self, gl: &gl::Gl, name: &str, v0: f32, v1: f32, v2: f32) {
+    pub fn set_uniform_3f(&self, gl: &gl_dstruct::Gl, name: &str, v0: f32, v1: f32, v2: f32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform3f(loc, v0, v1, v2) }
     }
 
-    pub fn set_uniform_4f(&self, gl: &gl::Gl, name: &str, v0: f32, v1: f32, v2: f32, v3: f32) {
+    pub fn set_uniform_4f(&self, gl: &gl_dstruct::Gl, name: &str, v0: f32, v1: f32, v2: f32, v3: f32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform4f(loc, v0, v1, v2, v3) }
     }
 
-    pub fn set_uniform_1i(&self, gl: &gl::Gl, name: &str, v0: i32) {
+    pub fn set_uniform_1i(&self, gl: &gl_dstruct::Gl, name: &str, v0: i32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1i(loc, v0) }
     }
 
-    pub fn set_uniform_2i(&self, gl: &gl::Gl, name: &str, v0: i32, v1: i32) {
+    pub fn set_uniform_2i(&self, gl: &gl_dstruct::Gl, name: &str, v0: i32, v1: i32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform2i(loc, v0, v1) }
     }
 
-    pub fn set_uniform_3i(&self, gl: &gl::Gl, name: &str, v0: i32, v1: i32, v2: i32) {
+    pub fn set_uniform_3i(&self, gl: &gl_dstruct::Gl, name: &str, v0: i32, v1: i32, v2: i32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform3i(loc, v0, v1, v2) }
     }
 
-    pub fn set_uniform_4i(&self, gl: &gl::Gl, name: &str, v0: i32, v1: i32, v2: i32, v3: i32) {
+    pub fn set_uniform_4i(&self, gl: &gl_dstruct::Gl, name: &str, v0: i32, v1: i32, v2: i32, v3: i32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform4i(loc, v0, v1, v2, v3) }
     }
 
-    pub fn set_uniform_1ui(&self, gl: &gl::Gl, name: &str, v0: u32) {
+    pub fn set_uniform_1ui(&self, gl: &gl_dstruct::Gl, name: &str, v0: u32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1ui(loc, v0) }
     }
 
-    pub fn set_uniform_2ui(&self, gl: &gl::Gl, name: &str, v0: u32, v1: u32) {
+    pub fn set_uniform_2ui(&self, gl: &gl_dstruct::Gl, name: &str, v0: u32, v1: u32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform2ui(loc, v0, v1) }
     }
 
-    pub fn set_uniform_3ui(&self, gl: &gl::Gl, name: &str, v0: u32, v1: u32, v2: u32) {
+    pub fn set_uniform_3ui(&self, gl: &gl_dstruct::Gl, name: &str, v0: u32, v1: u32, v2: u32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform3ui(loc, v0, v1, v2) }
     }
 
-    pub fn set_uniform_4ui(&self, gl: &gl::Gl, name: &str, v0: u32, v1: u32, v2: u32, v3: u32) {
+    pub fn set_uniform_4ui(&self, gl: &gl_dstruct::Gl, name: &str, v0: u32, v1: u32, v2: u32, v3: u32) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform4ui(loc, v0, v1, v2, v3) }
     }
 
-    pub fn set_uniform_fv(&self, gl: &gl::Gl, name: &str, v: &[f32]) {
+    pub fn set_uniform_fv(&self, gl: &gl_dstruct::Gl, name: &str, v: &[f32]) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1fv(loc, v.len() as i32, v.as_ptr()) }
     }
     
-    pub fn set_uniform_iv(&self, gl: &gl::Gl, name: &str, v: &[i32]) {
+    pub fn set_uniform_iv(&self, gl: &gl_dstruct::Gl, name: &str, v: &[i32]) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1iv(loc, v.len() as i32, v.as_ptr()) }
     }
 
-    pub fn set_uniform_uiv(&self, gl: &gl::Gl, name: &str, v: &[u32]) {
+    pub fn set_uniform_uiv(&self, gl: &gl_dstruct::Gl, name: &str, v: &[u32]) {
         let loc = self.get_uniform_loc(gl, name);
         unsafe { gl.Uniform1uiv(loc, v.len() as i32, v.as_ptr()) }
     }

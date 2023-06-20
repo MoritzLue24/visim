@@ -1,3 +1,5 @@
+use gl_dstruct::gl;
+
 
 #[derive(Clone, Copy)]
 pub enum DrawUsage {
@@ -26,7 +28,7 @@ impl Type for ElementArrayType {
 
 pub struct Buffer<B: Type, T> {
     data_offset: isize,
-    gl: gl::Gl,
+    gl: gl_dstruct::Gl,
     id: gl::types::GLuint,
     usage: DrawUsage,
     _marker_b: std::marker::PhantomData<B>,
@@ -34,7 +36,7 @@ pub struct Buffer<B: Type, T> {
 }
 
 impl<B: Type, T> Buffer<B, T> {
-    pub fn new(gl: &gl::Gl, usage: DrawUsage) -> Self {
+    pub fn new(gl: &gl_dstruct::Gl, usage: DrawUsage) -> Self {
         let mut id = 0;
         unsafe { gl.GenBuffers(1, &mut id) }
         Self {

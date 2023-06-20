@@ -1,11 +1,13 @@
+use gl_dstruct::gl;
+
 
 pub struct VertexArray {
-    gl: gl::Gl,
+    gl: gl_dstruct::Gl,
     id: gl::types::GLuint
 }
 
 impl VertexArray {
-    pub fn new(gl: &gl::Gl) -> Self {
+    pub fn new(gl: &gl_dstruct::Gl) -> Self {
         let mut id = 0;
         unsafe { gl.GenVertexArrays(1, &mut id) }
         Self { gl: gl.clone(), id }

@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use gl::Gl;
+use gl_dstruct::gl;
 use crate::{err, Result};
 
 
@@ -14,12 +14,12 @@ pub enum ShaderType {
 }
 
 pub struct Shader {
-    gl: Gl,
+    gl: gl_dstruct::Gl,
     id: gl::types::GLuint
 }
 
 impl Shader {
-    pub fn from_source(gl: &Gl, source: &str, kind: ShaderType) -> Result<Self> {
+    pub fn from_source(gl: &gl_dstruct::Gl, source: &str, kind: ShaderType) -> Result<Self> {
         let id = unsafe { gl.CreateShader(kind as u32) };
         
         unsafe {

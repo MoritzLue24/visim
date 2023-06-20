@@ -1,4 +1,5 @@
 use crate::{Vector2, Color};
+use gl_dstruct::gl;
 
 
 #[repr(C, packed)]
@@ -12,7 +13,7 @@ impl Vertex {
         Self { pos: pos.into(), color: color.into() }
     }
 
-    pub fn attrib_pointers(gl: &gl::Gl, vao_id: gl::types::GLuint) {
+    pub fn attrib_pointers(gl: &gl_dstruct::Gl, vao_id: gl::types::GLuint) {
         unsafe {
             // Position
             gl.EnableVertexArrayAttrib(vao_id, 0);
