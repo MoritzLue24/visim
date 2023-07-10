@@ -53,7 +53,9 @@ gen_err_kind! {
     pub enum Kind {
         Other => fn new(),
         ParseShaderError => fn parse_shader(),
-        LinkProgramError => fn link_program()
+        LinkProgramError => fn link_program(),
+        FileMissingError => fn file_missing(path: String),
+        TypeConvertError => fn type_convert()
     }
 }
 

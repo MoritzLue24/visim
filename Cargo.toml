@@ -16,3 +16,4 @@ gl_debug = ["gl_dstruct/debug"]
 [dependencies]
 sdl2 = "0.35.2"
 gl_dstruct = "0.2.0"
+png = "0.17.9"

@@ -2,7 +2,7 @@ pub mod err;
 pub mod event;
 mod vector;
 mod color;
-mod render;
+pub mod render;
 mod renderer;
 mod window;
 
@@ -12,7 +12,7 @@ pub use renderer::Renderer;
 pub use window::Window;
 pub use vector::Vector2;
 pub use color::Color;
-pub use render::{Program, ShaderType, Shader, Vertex};
+pub use render::{Program, ShaderType, Shader, Vertex, Texture};
 
 
 #[cfg(test)]

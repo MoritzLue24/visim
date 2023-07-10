@@ -1,14 +1,16 @@
-use crate::{render::{buffer, VertexArray}, Result, Program, err, Vertex, Color};
+use crate::{render::{buffer, VertexArray, Texture}, Result, Program, err, Vertex, Color};
 use gl_dstruct::gl;
 
 
 pub struct Renderer {
     vertices_len: u32,
     max_vertices: isize,
+    textures: [i32; 1],
 
-    gl: gl_dstruct::Gl,
-    program: Program,
-    vao: VertexArray,
+    // Todo make gl private
+    pub gl: gl_dstruct::Gl,
+    pub program: Program,
+    pub vao: VertexArray,
     pub vbo: buffer::Array<Vertex>,
     ibo: buffer::ElementArray<u32>,
     
@@ -36,14 +38,12 @@ impl Renderer {
         vbo.bind();
         ibo.bind();
         Vertex::attrib_pointers(&gl, vao.get_id());
-        vao.unbind();
-        vbo.unbind();
-        ibo.unbind();
-
 
         vbo.allocate_data(std::mem::size_of::<Vertex>() as isize * max_vertices);
         ibo.allocate_data(std::mem::size_of::<u32>() as isize * max_vertices);
- 
+        
+        Texture::parameters(&gl);
+
         let win_size = window.size();
         unsafe {
             gl.Viewport(0, 0,
@@ -53,7 +53,7 @@ impl Renderer {
         };
 
         Ok(Self { 
-            vertices_len: 0, max_vertices,
+            vertices_len: 0, max_vertices, textures: [-1; 1],
             gl, program, vbo, ibo, vao,
             _sdl_gl_ctx: gl_ctx,
         })
@@ -62,8 +62,8 @@ impl Renderer {
     pub fn render(&self) {
         self.program.bind();
         self.vao.bind();
-        unsafe {self.gl.DrawElements(gl::TRIANGLES, self.vertices_len as i32, gl::UNSIGNED_INT, 0 as *const std::ffi::c_void) }
-        self.vao.unbind();
+        // self.program.set_uniform_iv(&self.gl, "u_Textures", &self.textures);
+        unsafe { self.gl.DrawElements(gl::TRIANGLES, self.vertices_len as i32, gl::UNSIGNED_INT, 0 as *const std::ffi::c_void) }
     }
 
     pub fn clear<C: Into<Color>>(&mut self, color: C) {
@@ -77,6 +77,11 @@ impl Renderer {
             self.gl.ClearColor(col.r, col.g, col.b, col.a);
             self.gl.Clear(gl::COLOR_BUFFER_BIT);
         }
+    }
+
+    pub fn texture<V: Into<Vertex>>(&mut self, vertices: Vec<V>, texture: &Texture, index: usize) {
+        self.polygon(vertices);
+        self.textures[index] = texture.get_unit() as i32;
     }
 
     pub fn polygon<V: Into<Vertex>>(&mut self, vertices: Vec<V>) {

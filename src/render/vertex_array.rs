@@ -20,10 +20,6 @@ impl VertexArray {
     pub fn bind(&self) {
         unsafe { self.gl.BindVertexArray(self.id) }
     }
-
-    pub fn unbind(&self) {
-        unsafe { self.gl.BindVertexArray(0) }
-    }
 }
 
 impl Drop for VertexArray {

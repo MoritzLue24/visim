@@ -29,7 +29,7 @@ impl Type for ElementArrayType {
 pub struct Buffer<B: Type, T> {
     data_offset: isize,
     gl: gl_dstruct::Gl,
-    id: gl::types::GLuint,
+    id: u32,
     usage: DrawUsage,
     _marker_b: std::marker::PhantomData<B>,
     _marker_t: std::marker::PhantomData<T>
@@ -53,10 +53,6 @@ impl<B: Type, T> Buffer<B, T> {
         unsafe { self.gl.BindBuffer(B::TYPE, self.id) }
     }
 
-    pub fn unbind(&self) {
-        unsafe { self.gl.BindBuffer(B::TYPE, 0) }
-    }
-
     pub fn write_data(&mut self, data: &[T]) {
         let data_size = data.len() * std::mem::size_of::<T>();
         self.data_offset = data_size as isize;
@@ -70,7 +66,6 @@ impl<B: Type, T> Buffer<B, T> {
                 self.usage as u32
             );
         }
-        self.unbind();
     }
 
     pub fn allocate_data(&mut self, bytes: isize) {
@@ -85,7 +80,6 @@ impl<B: Type, T> Buffer<B, T> {
                 self.usage as u32
             );
         }
-        self.unbind();
     }
 
     pub fn append_data(&mut self, data: &[T]) {
@@ -100,7 +94,6 @@ impl<B: Type, T> Buffer<B, T> {
                 data.as_ptr() as *const gl::types::GLvoid
             )
         }
-        self.unbind();
         self.data_offset += data_size as isize;
     }
 

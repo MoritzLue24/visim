@@ -6,7 +6,7 @@ use crate::{render::Shader, err, Result, ShaderType};
 #[derive(Clone)]
 pub struct Program {
     gl: gl_dstruct::Gl,
-    id: gl::types::GLuint
+    id: u32
 }
 
 impl Program {
@@ -20,7 +20,7 @@ impl Program {
     pub fn from_shaders(gl: &gl_dstruct::Gl, shaders: &[Shader]) -> Result<Self> {
         let id = unsafe { gl.CreateProgram() };
         for shader in shaders {
-            unsafe { gl.AttachShader(id, shader.id()) }
+            unsafe { gl.AttachShader(id, shader.get_id()) }
         }
         unsafe { gl.LinkProgram(id) }
 
@@ -45,7 +45,7 @@ impl Program {
         }
 
         for shader in shaders {
-            unsafe { gl.DetachShader(id, shader.id()) }
+            unsafe { gl.DetachShader(id, shader.get_id()) }
         }
 
         Ok(Program { gl: gl.clone(), id })

@@ -15,7 +15,7 @@ pub enum ShaderType {
 
 pub struct Shader {
     gl: gl_dstruct::Gl,
-    id: gl::types::GLuint
+    id: u32 
 }
 
 impl Shader {
@@ -54,7 +54,7 @@ impl Shader {
         Ok(Shader { gl: gl.clone(), id })
     }
 
-    pub fn id(&self) -> gl::types::GLuint {
+    pub fn get_id(&self) -> gl::types::GLuint {
         self.id
     }
 }
