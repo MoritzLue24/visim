@@ -36,6 +36,7 @@ impl Renderer {
         vbo.bind();
         ibo.bind();
         Vertex::attrib_pointers(&gl, vao.get_id());
+        // Idk maybe remove??
         vao.unbind();
         vbo.unbind();
         ibo.unbind();
