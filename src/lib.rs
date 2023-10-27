@@ -17,6 +17,10 @@ pub use render::{Program, ShaderType, Shader, Vertex, Texture};
 
 #[cfg(test)]
 mod tests {
+    use gl_dstruct::gl;
+
+    use crate::render::{VertexArray, buffer};
+
     use super::*;
 
     #[test]

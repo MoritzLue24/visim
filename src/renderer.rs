@@ -3,7 +3,7 @@ use gl_dstruct::gl;
 
 
 pub struct Renderer {
-    vertices_len: u32,
+    pub vertices_len: u32,
     max_vertices: isize,
     textures: [i32; 1],
 
@@ -12,7 +12,7 @@ pub struct Renderer {
     pub program: Program,
     pub vao: VertexArray,
     pub vbo: buffer::Array<Vertex>,
-    ibo: buffer::ElementArray<u32>,
+    pub ibo: buffer::ElementArray<u32>,
     
     // Declared last to drop last 
     // (to prevent gl error 1282 on glDelete)
@@ -97,6 +97,7 @@ impl Renderer {
 
         let indices = vec![self.vertices_len, self.vertices_len + 1, self.vertices_len + 2];
         self.ibo.append_data(&indices);
+        // TODO: Fix: data.len() is to "small" it can only draw triangles.
         self.vertices_len += data.len() as u32;
     }
 }

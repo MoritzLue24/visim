@@ -6,11 +6,12 @@ fn main() -> visim::Result<()> {
     // let v1 = visim::Vertex { pos: (0., 0.5).into(), color: (0., 1., 0.).into(), tex_i: -1, tex_coords: (0., 0.).into() };
     // let v2 = visim::Vertex { pos: (-0.5, -0.5).into(), color: (0., 1., 0.).into(), tex_i: -1, tex_coords: (0., 0.).into() };
     // let v3 = visim::Vertex { pos: (0.5, -0.5).into(), color: (0., 1., 0.).into(), tex_i: -1, tex_coords: (0., 0.).into() };
-    let v1 = visim::Vertex { pos: (0., 0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (0.5, 1.).into() };
+    let v1 = visim::Vertex { pos: (-0.5, 0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (0., 1.).into() };
     let v2 = visim::Vertex { pos: (-0.5, -0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (0., 0.).into() };
-    let v3 = visim::Vertex { pos: (0.5, -0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (1., 0.).into() };
+    let v3 = visim::Vertex { pos: (0.5, 0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (1., 1.).into() };
+    let v4 = visim::Vertex { pos: (0.5, -0.5).into(), color: (1., 0., 0.).into(), tex_i: 0, tex_coords: (1., 0.).into() };
 
-    let texture = visim::Texture::from_file(&window.renderer.gl, "res/test.png", 1)?;
+    let _texture = visim::Texture::from_file(&window.renderer.gl, "res/test.png", 1)?;
     
     window.renderer.program.bind();
     window.renderer.vao.bind();
@@ -21,8 +22,18 @@ fn main() -> visim::Result<()> {
         window.renderer.clear((0.5, 0.2, 0.7, 1.0));
         
         // window.renderer.polygon(vec![v1, v2, v3]);
+        
 
-        window.renderer.texture(vec![v1, v2, v3], &texture, 0);
+        window.renderer.vbo.append_data(&[v1, v2, v3, v4]);
+        window.renderer.ibo.append_data(&[
+            window.renderer.vertices_len,
+            window.renderer.vertices_len + 1,
+            window.renderer.vertices_len + 2,
+            window.renderer.vertices_len + 1,
+            window.renderer.vertices_len + 2,
+            window.renderer.vertices_len + 3
+        ]);
+        window.renderer.vertices_len += 10;
 
         // window.renderer.polygon(vec![
         //     visim::Vertex::tex((0., 0.5), 50, (0., 0.)),
